@@ -9,38 +9,146 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SubscribeRouteImport } from './routes/subscribe'
+import { Route as MealsRouteRouteImport } from './routes/meals/route'
+import { Route as DrinksRouteRouteImport } from './routes/drinks/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MealsIndexRouteImport } from './routes/meals/index'
+import { Route as DrinksIndexRouteImport } from './routes/drinks/index'
+import { Route as MealsMealIdRouteImport } from './routes/meals/$mealId'
+import { Route as DrinksDrinkIdRouteImport } from './routes/drinks/$drinkId'
 
+const SubscribeRoute = SubscribeRouteImport.update({
+  id: '/subscribe',
+  path: '/subscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MealsRouteRoute = MealsRouteRouteImport.update({
+  id: '/meals',
+  path: '/meals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrinksRouteRoute = DrinksRouteRouteImport.update({
+  id: '/drinks',
+  path: '/drinks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MealsIndexRoute = MealsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MealsRouteRoute,
+} as any)
+const DrinksIndexRoute = DrinksIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DrinksRouteRoute,
+} as any)
+const MealsMealIdRoute = MealsMealIdRouteImport.update({
+  id: '/$mealId',
+  path: '/$mealId',
+  getParentRoute: () => MealsRouteRoute,
+} as any)
+const DrinksDrinkIdRoute = DrinksDrinkIdRouteImport.update({
+  id: '/$drinkId',
+  path: '/$drinkId',
+  getParentRoute: () => DrinksRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/drinks': typeof DrinksRouteRouteWithChildren
+  '/meals': typeof MealsRouteRouteWithChildren
+  '/subscribe': typeof SubscribeRoute
+  '/drinks/$drinkId': typeof DrinksDrinkIdRoute
+  '/meals/$mealId': typeof MealsMealIdRoute
+  '/drinks/': typeof DrinksIndexRoute
+  '/meals/': typeof MealsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/subscribe': typeof SubscribeRoute
+  '/drinks/$drinkId': typeof DrinksDrinkIdRoute
+  '/meals/$mealId': typeof MealsMealIdRoute
+  '/drinks': typeof DrinksIndexRoute
+  '/meals': typeof MealsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/drinks': typeof DrinksRouteRouteWithChildren
+  '/meals': typeof MealsRouteRouteWithChildren
+  '/subscribe': typeof SubscribeRoute
+  '/drinks/$drinkId': typeof DrinksDrinkIdRoute
+  '/meals/$mealId': typeof MealsMealIdRoute
+  '/drinks/': typeof DrinksIndexRoute
+  '/meals/': typeof MealsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/drinks'
+    | '/meals'
+    | '/subscribe'
+    | '/drinks/$drinkId'
+    | '/meals/$mealId'
+    | '/drinks/'
+    | '/meals/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/subscribe'
+    | '/drinks/$drinkId'
+    | '/meals/$mealId'
+    | '/drinks'
+    | '/meals'
+  id:
+    | '__root__'
+    | '/'
+    | '/drinks'
+    | '/meals'
+    | '/subscribe'
+    | '/drinks/$drinkId'
+    | '/meals/$mealId'
+    | '/drinks/'
+    | '/meals/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DrinksRouteRoute: typeof DrinksRouteRouteWithChildren
+  MealsRouteRoute: typeof MealsRouteRouteWithChildren
+  SubscribeRoute: typeof SubscribeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/subscribe': {
+      id: '/subscribe'
+      path: '/subscribe'
+      fullPath: '/subscribe'
+      preLoaderRoute: typeof SubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/meals': {
+      id: '/meals'
+      path: '/meals'
+      fullPath: '/meals'
+      preLoaderRoute: typeof MealsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drinks': {
+      id: '/drinks'
+      path: '/drinks'
+      fullPath: '/drinks'
+      preLoaderRoute: typeof DrinksRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +156,70 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/meals/': {
+      id: '/meals/'
+      path: '/'
+      fullPath: '/meals/'
+      preLoaderRoute: typeof MealsIndexRouteImport
+      parentRoute: typeof MealsRouteRoute
+    }
+    '/drinks/': {
+      id: '/drinks/'
+      path: '/'
+      fullPath: '/drinks/'
+      preLoaderRoute: typeof DrinksIndexRouteImport
+      parentRoute: typeof DrinksRouteRoute
+    }
+    '/meals/$mealId': {
+      id: '/meals/$mealId'
+      path: '/$mealId'
+      fullPath: '/meals/$mealId'
+      preLoaderRoute: typeof MealsMealIdRouteImport
+      parentRoute: typeof MealsRouteRoute
+    }
+    '/drinks/$drinkId': {
+      id: '/drinks/$drinkId'
+      path: '/$drinkId'
+      fullPath: '/drinks/$drinkId'
+      preLoaderRoute: typeof DrinksDrinkIdRouteImport
+      parentRoute: typeof DrinksRouteRoute
+    }
   }
 }
 
+interface DrinksRouteRouteChildren {
+  DrinksDrinkIdRoute: typeof DrinksDrinkIdRoute
+  DrinksIndexRoute: typeof DrinksIndexRoute
+}
+
+const DrinksRouteRouteChildren: DrinksRouteRouteChildren = {
+  DrinksDrinkIdRoute: DrinksDrinkIdRoute,
+  DrinksIndexRoute: DrinksIndexRoute,
+}
+
+const DrinksRouteRouteWithChildren = DrinksRouteRoute._addFileChildren(
+  DrinksRouteRouteChildren,
+)
+
+interface MealsRouteRouteChildren {
+  MealsMealIdRoute: typeof MealsMealIdRoute
+  MealsIndexRoute: typeof MealsIndexRoute
+}
+
+const MealsRouteRouteChildren: MealsRouteRouteChildren = {
+  MealsMealIdRoute: MealsMealIdRoute,
+  MealsIndexRoute: MealsIndexRoute,
+}
+
+const MealsRouteRouteWithChildren = MealsRouteRoute._addFileChildren(
+  MealsRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DrinksRouteRoute: DrinksRouteRouteWithChildren,
+  MealsRouteRoute: MealsRouteRouteWithChildren,
+  SubscribeRoute: SubscribeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
