@@ -1,5 +1,5 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
-
+import { createFileRoute, Outlet, Link } from '@tanstack/react-router'
+import { AxiosError } from 'axios'
 import {
   customFetchDrinks,
   type DrinkResponse,
@@ -7,6 +7,14 @@ import {
   drinkResponseSchema,
   drinkSearchParamsSchema,
 } from '../../utils'
+function RootNotFoundComponent() {
+  return (
+    <div>
+      <h2>404 - Page Not Found!</h2>
+      <Link to='/'>Back Home</Link>
+    </div>
+  )
+}
 const buildAPiParams = (params: DrinkSearchParams) => {
   const { name, alcoholic, page, glass_type } = params
   const apiParams = new URLSearchParams()
@@ -34,6 +42,7 @@ const drinkQuery = (params: DrinkSearchParams) => {
 }
 export const Route = createFileRoute('/drinks')({
   component: RouteComponent,
+  notFoundComponent: RootNotFoundComponent,
   validateSearch: (search) => drinkSearchParamsSchema.parse(search),
   loaderDeps: ({ search: { name, alcoholic, page, glass_type } }) => ({
     name,
@@ -56,9 +65,10 @@ export const Route = createFileRoute('/drinks')({
       }
       return data
     } catch (error) {
+      if (error instanceof AxiosError) throw error
       const errorMessage =
-        error instanceof Error ? error.message : 'Something Went Wrong'
-      console.log(errorMessage)
+        error instanceof Error ? error.message : 'Unknown error'
+      console.error(errorMessage)
       return { pagination: { count: 0, pages: 0 } }
     }
   },
