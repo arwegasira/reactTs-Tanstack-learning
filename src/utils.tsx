@@ -8,7 +8,7 @@ export const customFetchMeals = axios.create({
 })
 
 export const customFetchDrinks = axios.create({
-  baseURL: 'https://boozeapi.com/api/v1/cocktails',
+  baseURL: 'https://boozeapi.com/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -82,4 +82,54 @@ export const mealResponseSchema = z.object({
     .nullable(),
 })
 
+export const drinkSearchParamsSchema = z.object({
+  name: z.string().optional().nullable(),
+  alcoholic: z.coerce.boolean().optional(),
+  page: z.coerce.number().min(1).optional(),
+  glass_type: z.coerce.number().min(1).optional(),
+})
+
+const drinkCategorySchema = z.object({
+  id: z.number(),
+  label: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+})
+const drinkGlassTypeSchema = z.object({
+  id: z.number(),
+  label: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+})
+const drinkIngredientSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  type: z.string(),
+  contains_alcohol: z.boolean(),
+  ABV: z.number().nullable(),
+  image: z.url(),
+  created_at: z.string(),
+  updated_at: z.string(),
+})
+const CocktailSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  category: drinkCategorySchema,
+  alcoholic: z.boolean(),
+  glass_type: drinkGlassTypeSchema,
+  instructions: z.string(),
+  image: z.url(),
+  ingredients: z.array(drinkIngredientSchema),
+  created_at: z.string(),
+  updated_at: z.string(),
+})
+export const drinkResponseSchema = z.object({
+  pagination: z.object({
+    count: z.number(),
+    pages: z.number(),
+  }),
+  data: z.array(CocktailSchema).optional(),
+})
 export type MealResponse = z.infer<typeof mealResponseSchema>
+export type DrinkResponse = z.infer<typeof drinkResponseSchema>
+export type DrinkSearchParams = z.infer<typeof drinkSearchParamsSchema>
