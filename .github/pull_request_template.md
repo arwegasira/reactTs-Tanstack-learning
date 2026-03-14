@@ -4,12 +4,12 @@
 
 ## Type of Change
 
-- [ ] ✨ Feature — new functionality
-- [ ] 🐛 Bug fix
-- [ ] ♻️ Refactor — no behavior change, just cleaner code
-- [ ] 🎨 UI/Style — layout, design, shadcn component changes
-- [ ] 📦 Chore — deps, config, tooling
-- [ ] 📝 Docs — comments, README
+- [ ] Feature — new functionality
+- [ ] Bug fix
+- [ ] Refactor — no behavior change, just cleaner code
+- [ ] UI/Style — layout, design, shadcn component changes
+- [ ] Chore — deps, config, tooling
+- [ ] Docs — comments, README
 
 ## What Changed
 
