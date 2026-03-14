@@ -1,8 +1,17 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Outlet, Link } from '@tanstack/react-router'
 import { mealSearchParamsSchema, type MealResponse } from '../../utils'
 import { customFetchMeals } from '../../utils'
+import { AxiosError } from 'axios'
 
 type LoaderData = MealResponse | { Meal: null }
+function RootNotFoundComponent() {
+  return (
+    <div>
+      <h2>404 - Page Not Found!</h2>
+      <Link to='/'>Back Home</Link>
+    </div>
+  )
+}
 const mealQuery = (s: string) => {
   return {
     queryKey: ['meals', s],
@@ -11,6 +20,7 @@ const mealQuery = (s: string) => {
 }
 export const Route = createFileRoute('/meals')({
   component: RouteComponent,
+  notFoundComponent: RootNotFoundComponent,
   validateSearch: (search) => mealSearchParamsSchema.parse(search),
   loaderDeps: ({ search: { s } }) => ({ s }),
   loader: async ({
@@ -27,6 +37,9 @@ export const Route = createFileRoute('/meals')({
 
       return meals
     } catch (error) {
+      if (error instanceof AxiosError) {
+        throw error
+      }
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error'
       console.error('Error fetching meals:', errorMessage)
