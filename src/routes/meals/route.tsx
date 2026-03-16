@@ -3,7 +3,7 @@ import { mealSearchParamsSchema, type MealResponse } from '../../utils'
 import { customFetchMeals } from '../../utils'
 import { AxiosError } from 'axios'
 
-type LoaderData = MealResponse | { Meal: null }
+type LoaderData = MealResponse
 function RootNotFoundComponent() {
   return (
     <div>
@@ -14,7 +14,7 @@ function RootNotFoundComponent() {
 }
 const mealQuery = (s: string) => {
   return {
-    queryKey: ['meals', s],
+    queryKey: ['meals', s ? s : ''],
     queryFn: async () => await customFetchMeals.get(`/search.php?s=${s}`),
   }
 }
@@ -43,7 +43,7 @@ export const Route = createFileRoute('/meals')({
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error'
       console.error('Error fetching meals:', errorMessage)
-      return { Meal: null }
+      return { meals: null }
     }
     //  finally {
     //   return { Meal: null }
