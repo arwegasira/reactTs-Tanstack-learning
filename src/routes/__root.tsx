@@ -4,6 +4,7 @@ import {
   createRootRouteWithContext,
   type ErrorComponentProps,
   Link,
+  useRouterState,
 } from '@tanstack/react-router'
 import { QueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
@@ -68,6 +69,12 @@ export const Route = createRootRouteWithContext<RootRouteContext>()({
 })
 
 function RootComponent() {
+  const isLoading = useRouterState({
+    select: (state) => state.status === 'pending',
+  })
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
   return (
     <React.Fragment>
       <div>Hello "__root"!</div>
