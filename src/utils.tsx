@@ -111,7 +111,7 @@ const drinkIngredientSchema = z.object({
   created_at: z.string(),
   updated_at: z.string(),
 })
-const CocktailSchema = z.object({
+export const CocktailSchema = z.object({
   id: z.number(),
   name: z.string(),
   category: drinkCategorySchema,
@@ -133,3 +133,4 @@ export const drinkResponseSchema = z.object({
 export type MealResponse = z.infer<typeof mealResponseSchema>
 export type DrinkResponse = z.infer<typeof drinkResponseSchema>
 export type DrinkSearchParams = z.infer<typeof drinkSearchParamsSchema>
+export type SingleCocktailResponse = z.infer<typeof CocktailSchema>
